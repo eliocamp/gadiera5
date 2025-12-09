@@ -44,8 +44,68 @@
   </div>
 </nav><div class="container template-home">
 <div class="row">
-  <main id="main" class="col-md-9">
-What the package does (one paragraph).
+  <main id="main" class="col-md-9"><div class="section level1">
+<div class="page-header"><h1 id="gadiera5">gadiera5<a class="anchor" aria-label="anchor" href="#gadiera5"></a>
+</h1></div>
+<!-- badges: start -->
+
+<p>The goal of gadiera5 is to list ERA5 files stored in on gadi.</p>
+<div class="section level2">
+<h2 id="installation">Installation<a class="anchor" aria-label="anchor" href="#installation"></a>
+</h2>
+<p>You can install the development version of gadiera5 like so:</p>
+<div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu">pak</span><span class="fu">::</span><span class="fu"><a href="https://pak.r-lib.org/reference/pak.html" class="external-link">pak</a></span><span class="op">(</span><span class="st">"eliocamp/gadiera5"</span><span class="op">)</span></span></code></pre></div>
+</div>
+<div class="section level2">
+<h2 id="example">Example<a class="anchor" aria-label="anchor" href="#example"></a>
+</h2>
+<p>The <code><a href="reference/era5.html">era5()</a></code> function is the main entry point. It returns a data.table with information of all available variables and their aggregation level, as well as a description. This data.table can then be filtered and subsetted as usual.</p>
+<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://eliocamp.github.io/gadiera5/">gadiera5</a></span><span class="op">)</span></span>
+<span></span>
+<span><span class="op">(</span><span class="va">temp_2metres</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/era5.html">era5</a></span><span class="op">(</span><span class="op">)</span> <span class="op">|&gt;</span></span>
+<span>  <span class="va">_</span><span class="op">[</span><span class="va">variable</span> <span class="op">==</span> <span class="st">"2t"</span> <span class="op">&amp;</span> <span class="va">aggregation</span> <span class="op">==</span> <span class="st">"monthly-averaged"</span><span class="op">]</span><span class="op">)</span></span>
+<span><span class="co">#&gt;    variable           long_name         level      aggregation</span></span>
+<span><span class="co">#&gt;      &lt;char&gt;              &lt;char&gt;        &lt;char&gt;           &lt;char&gt;</span></span>
+<span><span class="co">#&gt; 1:       2t 2 metre temperature single-levels monthly-averaged</span></span></code></pre></div>
+<p>The <code><a href="reference/set_date_range.html">set_date_range()</a></code> function sets the dates of dates of interest. The range can be specified as full dates but setting year-month or just year is also supported.</p>
+<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">temp_2metres</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu"><a href="reference/set_date_range.html">set_date_range</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"2020-01-03"</span>, <span class="st">"2022-03-15"</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="co">#&gt;    variable           long_name         level      aggregation range_start</span></span>
+<span><span class="co">#&gt;      &lt;char&gt;              &lt;char&gt;        &lt;char&gt;           &lt;char&gt;      &lt;Date&gt;</span></span>
+<span><span class="co">#&gt; 1:       2t 2 metre temperature single-levels monthly-averaged  2020-01-03</span></span>
+<span><span class="co">#&gt;     range_end</span></span>
+<span><span class="co">#&gt;        &lt;Date&gt;</span></span>
+<span><span class="co">#&gt; 1: 2022-03-15</span></span></code></pre></div>
+<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">temp_2metres</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu"><a href="reference/set_date_range.html">set_date_range</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"2020-01"</span>, <span class="st">"2022-03"</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="co">#&gt;    variable           long_name         level      aggregation range_start</span></span>
+<span><span class="co">#&gt;      &lt;char&gt;              &lt;char&gt;        &lt;char&gt;           &lt;char&gt;      &lt;Date&gt;</span></span>
+<span><span class="co">#&gt; 1:       2t 2 metre temperature single-levels monthly-averaged  2020-01-01</span></span>
+<span><span class="co">#&gt;     range_end</span></span>
+<span><span class="co">#&gt;        &lt;Date&gt;</span></span>
+<span><span class="co">#&gt; 1: 2022-03-31</span></span></code></pre></div>
+<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="op">(</span><span class="va">temp_2metres</span> <span class="op">&lt;-</span> <span class="va">temp_2metres</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu"><a href="reference/set_date_range.html">set_date_range</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">2020</span>, <span class="fl">2022</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="co">#&gt;    variable           long_name         level      aggregation range_start</span></span>
+<span><span class="co">#&gt;      &lt;char&gt;              &lt;char&gt;        &lt;char&gt;           &lt;char&gt;      &lt;Date&gt;</span></span>
+<span><span class="co">#&gt; 1:       2t 2 metre temperature single-levels monthly-averaged  2020-01-01</span></span>
+<span><span class="co">#&gt;     range_end</span></span>
+<span><span class="co">#&gt;        &lt;Date&gt;</span></span>
+<span><span class="co">#&gt; 1: 2022-12-31</span></span></code></pre></div>
+<p>Finally, use <code><a href="reference/get_files.html">get_files()</a></code> to retrieve all the files. The return is a data.table with a list column called <code>files</code>.</p>
+<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">temp_2metres</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu"><a href="reference/get_files.html">get_files</a></span><span class="op">(</span><span class="op">)</span></span>
+<span><span class="co">#&gt;    variable      aggregation range_start  range_end           files</span></span>
+<span><span class="co">#&gt;      &lt;char&gt;           &lt;char&gt;      &lt;Date&gt;     &lt;Date&gt; &lt;list_of_files&gt;</span></span>
+<span><span class="co">#&gt; 1:       2t monthly-averaged  2020-01-01 2022-12-31      &lt;36 files&gt;</span></span></code></pre></div>
+</div>
+</div>
   </main><aside class="col-md-3"><div class="license">
 <h2 data-toc-skip>License</h2>
 <ul class="list-unstyled">
@@ -69,7 +129,13 @@ What the package does (one paragraph).
 </ul>
 </div>
 
-
+<div class="dev-status">
+<h2 data-toc-skip>Dev status</h2>
+<ul class="list-unstyled">
+<li><a href="https://lifecycle.r-lib.org/articles/stages.html#experimental" class="external-link"><img src="https://img.shields.io/badge/lifecycle-experimental-orange.svg" alt="Lifecycle: experimental"></a></li>
+<li><a href="https://CRAN.R-project.org/package=gadiera5" class="external-link"><img src="https://www.r-pkg.org/badges/version/gadiera5" alt="CRAN status"></a></li>
+</ul>
+</div>
 
   </aside>
 </div>
