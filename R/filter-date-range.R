@@ -1,20 +1,13 @@
-#| @export
-filter_date_range <- function(catalogue, range) {
+#' Set a desired range in a catalogue
+#'
+#' @export
+set_date_range <- function(catalogue, range) {
+  catalogue <- data.table::copy(catalogue)
+
   range <- parse_range(range)
-
-  catalogue[, c("date_start", "date_end") := date_range(file)]
-
-  if (is.na(range[1])) {
-    range[1] <- min(catalogue$date_start)
-  }
-
-  if (is.na(range[2])) {
-    range[2] <- max(catalogue$date_start)
-  }
-
-  catalogue[in_date(range(range), date_start, date_end)] |>
-    _[, let(date_start = NULL, date_end = NULL)] |>
-    _[]
+  catalogue[,
+    c("range_start", "range_end") := list(rep(range[1], .N), rep(range[2], .N))
+  ][]
 }
 
 date_range <- function(file) {
@@ -68,7 +61,7 @@ parse_range <- function(x) {
     # account for leap years
     days <- paste0(c(x[[2]], 1), collapse = "-") |>
       as.Date() |>
-      lubridate::days_in_month()
+      days_in_month()
 
     x[[2]][[3]] <- days
   }
@@ -76,4 +69,36 @@ parse_range <- function(x) {
   x |>
     vapply(\(x) paste0(x, collapse = "-"), character(1)) |>
     as.Date()
+}
+
+# from lubridate
+leap_year <- function(date) {
+  if (is.numeric(date)) {
+    year <- date
+  } else {
+    year <- data.table::year(date)
+  }
+  (year %% 4 == 0) & ((year %% 100 != 0) | (year %% 400 == 0))
+}
+
+N_DAYS_IN_MONTHS <- c(
+  Jan = 31L,
+  Feb = 28L,
+  Mar = 31L,
+  Apr = 30L,
+  May = 31L,
+  Jun = 30L,
+  Jul = 31L,
+  Aug = 31L,
+  Sep = 30L,
+  Oct = 31L,
+  Nov = 30L,
+  Dec = 31L
+)
+
+days_in_month <- function(x) {
+  month_x <- data.table::month(x)
+  n_days <- N_DAYS_IN_MONTHS[month_x]
+  n_days[month_x == "Feb" & leap_year(x)] <- 29L
+  n_days
 }

@@ -1,8 +1,13 @@
-era_root <- "/g/data/rt52/era5/"
+era5_root <- "/g/data/rt52/era5/"
 aggregations <- list(hourly = "reanalysis", monthly = "monthly-averaged")
 levels <- list(
   single_level = "single-levels",
   pressure_level = "pressure-levels"
+)
+
+levels_short <- list(
+  single_level = "sfc",
+  pressure_level = "pl"
 )
 
 template_dir <- "{level}/{aggregation}/{variable}/{year}/{file}"

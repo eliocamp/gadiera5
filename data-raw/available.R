@@ -12,13 +12,13 @@ get_longname <- (function(file) {
 }) |>
   memoise::memoise()
 
-available <- gsub(pattern = era_root, replacement = "", files) |>
+available <- gsub(pattern = era5_root, replacement = "", files) |>
   unglue::unglue_data(template_dir) |>
   data.table::as.data.table() |>
   _[, file := files] |>
   _[aggregation %in% aggregations] |>
   _[!(level == levels$single_level & variable == "z")] |>
   _[, long_name := get_longname(file), by = file] |>
-  _[]
+  _[, .(variable, long_name, level, aggregation)]
 
-usethis::use_data(available)
+usethis::use_data(available, internal = TRUE, overwrite = TRUE)
