@@ -2,10 +2,38 @@
 % Please edit documentation in R/era5.R
 \name{get_files}
 \alias{get_files}
-\title{Get all the files defined by a caralogue}
+\title{Get all the files defined by a catalogue}
 \usage{
 get_files(catalogue)
 }
+\arguments{
+\item{catalogue}{A data.table containing ERA5 catalogue information.
+Typically obtained by subsetting the output of \code{\link[=era5]{era5()}} and applying \code{\link[=set_date_range]{set_date_range()}}.}
+}
+\value{
+A data.table with columns:
+\itemize{
+\item \code{variable}: The ERA5 variable name
+\item \code{aggregation}: The temporal aggregation (e.g., "monthly", "hourly")
+\item \code{range_start}: Start date of the requested range
+\item \code{range_end}: End date of the requested range
+\item \code{files}: A list column containing character vectors of file paths for each
+combination of variable, aggregation, and date range. Files that don't exist
+will be \code{NA}.
+}
+}
 \description{
-Get all the files defined by a caralogue
+This function takes a catalogue of ERA5 data (typically obtained from \code{\link[=era5]{era5()}}
+and filtered with \code{\link[=set_date_range]{set_date_range()}}) and returns the corresponding file paths
+on gadi's filesystem.
+}
+\examples{
+\dontrun{
+# Get catalogue and filter for specific variable and dates
+catalogue <- era5() |>
+  subset(variable == "2t") |>
+  set_date_range("2020-01-01", "2020-12-31") |>
+  get_files(catalogue)
+}
+
 }

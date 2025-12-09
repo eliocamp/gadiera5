@@ -2,10 +2,51 @@
 % Please edit documentation in R/filter-date-range.R
 \name{set_date_range}
 \alias{set_date_range}
-\title{Set a desired range in a catalogue}
+\title{Set a date range for an ERA5 catalogue}
 \usage{
 set_date_range(catalogue, range)
 }
+\arguments{
+\item{catalogue}{A data.table containing ERA5 catalogue information, typically obtained
+from \code{\link[=era5]{era5()}}.}
+
+\item{range}{A date range specification. Can be provided in multiple formats:
+\itemize{
+\item A Date object or POSIXct/POSIXlt datetime object (length 2 vector for start and end)
+\item A character vector with ISO format dates: \code{c("2020-01-01", "2020-12-31")}
+\item A character vector with year only: \code{c("2020", "2021")} (automatically expands to full year)
+\item A character vector with year-month: \code{c("2020-01", "2020-06")} (expands to first/last day of month)
+}}
+}
+\value{
+A copy of the input catalogue with two additional columns:
+\itemize{
+\item \code{range_start}: Start date of the requested range (Date class)
+\item \code{range_end}: End date of the requested range (Date class)
+}
+}
 \description{
-Set a desired range in a catalogue
+Adds date range columns to an ERA5 catalogue for filtering data files by temporal extent.
+This function is typically used after \code{\link[=era5]{era5()}} and before \code{\link[=get_files]{get_files()}} to specify the
+desired time period for data retrieval.
+}
+\examples{
+\dontrun{
+# Set date range with full dates
+catalogue <- era5() |>
+  set_date_range(c("2020-01-01", "2020-12-31"))
+
+# Set date range with years only
+catalogue <- era5() |>
+  set_date_range(c("2020", "2021"))
+
+# Set date range with year-month
+catalogue <- era5() |>
+  set_date_range(c("2020-06", "2020-08"))
+
+# Use Date objects
+catalogue <- era5() |>
+  set_date_range(c(as.Date("2020-01-01"), as.Date("2020-12-31")))
+}
+
 }

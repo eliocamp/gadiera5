@@ -1,4 +1,36 @@
-#' Return ERA5 catalogue
+#' Get ERA5 data catalogue
+#'
+#' Returns a catalogue of available ERA5 reanalysis data on gadi. The catalogue
+#' contains information about all available variables, their temporal aggregations
+#' (hourly or monthly), and vertical levels (single-level or pressure-level).
+#'
+#' @return A data.table with the following columns:
+#'   * `variable`: ERA5 variable short name (e.g., "2t" for 2-meter temperature)
+#'   * `long_name`: Descriptive name of the variable
+#'   * `level`: Vertical level type ("single-levels" or "pressure-levels")
+#'   * `aggregation`: Temporal aggregation ("reanalysis" for hourly, "monthly-averaged" for monthly)
+#'
+#' @details
+#' The catalogue can be filtered using standard data.table operations and combined
+#' with [set_date_range()] and [get_files()] to retrieve specific data files.
+#'
+#' @examples
+#' \dontrun{
+#' # Get full catalogue
+#' catalogue <- era5()
+#'
+#' # Filter for specific variable
+#' temp_data <- era5() |>
+#'   subset(variable == "2t")
+#'
+#' # Search for variables using "geopotential"
+#' geopotential <- era5() |>
+#'   subset(grepl("geopotential", long_name, ignore.case = TRUE))
+#'
+#' # Filter for monthly single-level data
+#' monthly_sfc <- era5() |>
+#'   subset(aggregation == "monthly-averaged" & level == "single-levels")
+#' }
 #'
 #' @export
 era5 <- function() {
@@ -31,8 +63,32 @@ era5 <- function() {
   available
 }
 
-#' Get all the files defined by a caralogue
+#' Get all the files defined by a catalogue
 #'
+#' This function takes a catalogue of ERA5 data (typically obtained from [era5()]
+#' and filtered with [set_date_range()]) and returns the corresponding file paths
+#' on gadi's filesystem.
+#'
+#' @param catalogue A data.table containing ERA5 catalogue information.
+#'   Typically obtained by subsetting the output of [era5()] and applying [set_date_range()].
+#'
+#' @return A data.table with columns:
+#'   * `variable`: The ERA5 variable name
+#'   * `aggregation`: The temporal aggregation (e.g., "monthly", "hourly")
+#'   * `range_start`: Start date of the requested range
+#'   * `range_end`: End date of the requested range
+#'   * `files`: A list column containing character vectors of file paths for each
+#'     combination of variable, aggregation, and date range. Files that don't exist
+#'     will be `NA`.
+#'
+#' @examples
+#' \dontrun{
+#' # Get catalogue and filter for specific variable and dates
+#' catalogue <- era5() |>
+#'   subset(variable == "2t") |>
+#'   set_date_range("2020-01-01", "2020-12-31") |>
+#'   get_files(catalogue)
+#' }
 #'
 #' @export
 get_files <- function(catalogue) {

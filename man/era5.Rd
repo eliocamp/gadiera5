@@ -2,10 +2,44 @@
 % Please edit documentation in R/era5.R
 \name{era5}
 \alias{era5}
-\title{Return ERA5 catalogue}
+\title{Get ERA5 data catalogue}
 \usage{
 era5()
 }
+\value{
+A data.table with the following columns:
+\itemize{
+\item \code{variable}: ERA5 variable short name (e.g., "2t" for 2-meter temperature)
+\item \code{long_name}: Descriptive name of the variable
+\item \code{level}: Vertical level type ("single-levels" or "pressure-levels")
+\item \code{aggregation}: Temporal aggregation ("reanalysis" for hourly, "monthly-averaged" for monthly)
+}
+}
 \description{
-Return ERA5 catalogue
+Returns a catalogue of available ERA5 reanalysis data on gadi. The catalogue
+contains information about all available variables, their temporal aggregations
+(hourly or monthly), and vertical levels (single-level or pressure-level).
+}
+\details{
+The catalogue can be filtered using standard data.table operations and combined
+with \code{\link[=set_date_range]{set_date_range()}} and \code{\link[=get_files]{get_files()}} to retrieve specific data files.
+}
+\examples{
+\dontrun{
+# Get full catalogue
+catalogue <- era5()
+
+# Filter for specific variable
+temp_data <- era5() |>
+  subset(variable == "2t")
+
+# Search for variables using "geopotential"
+geopotential <- era5() |>
+  subset(grepl("geopotential", long_name, ignore.case = TRUE))
+
+# Filter for monthly single-level data
+monthly_sfc <- era5() |>
+  subset(aggregation == "monthly-averaged" & level == "single-levels")
+}
+
 }
