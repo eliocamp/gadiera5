@@ -60,7 +60,7 @@ era5 <- function() {
     )
   }
 
-  available
+  data.table::as.data.table(available)
 }
 
 #' Get all the files defined by a catalogue
