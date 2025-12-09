@@ -20,37 +20,52 @@ knitr::opts_chunk$set(
 [![CRAN status](https://www.r-pkg.org/badges/version/gadiera5)](https://CRAN.R-project.org/package=gadiera5)
 <!-- badges: end -->
 
-The goal of gadiera5 is to ...
+The goal of gadiera5 is to list ERA5 files stored in on gadi.
 
 ## Installation
 
 You can install the development version of gadiera5 like so:
 
 ``` r
-# FILL THIS IN! HOW CAN PEOPLE INSTALL YOUR DEV PACKAGE?
+pak::pak("eliocamp/gadiera5")
 ```
 
 ## Example
 
-This is a basic example which shows you how to solve a common problem:
+The `era5()` function is the main entry point. It returns a data.table with information of all available variables and their aggregation level, as well as a description. This data.table can then be filtered and subsetted as usual. 
 
 ```{r example}
 library(gadiera5)
-## basic example code
+
+(temp_2metres <- era5() |>
+  _[variable == "2t" & aggregation == "monthly-averaged"])
 ```
 
-What is special about using `README.Rmd` instead of just `README.md`? You can include R chunks like so:
+The `set_date_range()` function sets the dates of dates of interest. 
+The range can be specified as full dates but setting year-month or just year is also supported. 
 
-```{r cars}
-summary(cars)
+```{r}
+temp_2metres |>
+  set_date_range(c("2020-01-03", "2022-03-15"))
 ```
 
-You'll still need to render `README.Rmd` regularly, to keep `README.md` up-to-date. `devtools::build_readme()` is handy for this.
 
-You can also embed plots, for example:
-
-```{r pressure, echo = FALSE}
-plot(pressure)
+```{r}
+temp_2metres |>
+  set_date_range(c("2020-01", "2022-03"))
 ```
 
-In that case, don't forget to commit and push the resulting figure files, so they display on GitHub and CRAN.
+
+```{r}
+(temp_2metres <- temp_2metres |>
+  set_date_range(c(2020, 2022)))
+```
+
+Finally, use `get_files()` to retrieve all the files. The return is a data.table with a list column called `files`. 
+
+```{r}
+temp_2metres |>
+  get_files()
+```
+
+
