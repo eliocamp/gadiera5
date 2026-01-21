@@ -16,11 +16,13 @@ from \code{\link[=era5]{era5()}}.}
 \item A character vector with ISO format dates: \code{c("2020-01-01", "2020-12-31")}
 \item A character vector with year only: \code{c("2020", "2021")} (automatically expands to full year)
 \item A character vector with year-month: \code{c("2020-01", "2020-06")} (expands to first/last day of month)
+\code{range} can also be a list of range specifications to retrieve multiple non-overlapping ranges.
 }}
 }
 \value{
-A copy of the input catalogue with two additional columns:
+A copy of the input catalogue with three additional columns:
 \itemize{
+\item \code{range_id}: ID of the range.
 \item \code{range_start}: Start date of the requested range (Date class)
 \item \code{range_end}: End date of the requested range (Date class)
 }
@@ -39,7 +41,6 @@ catalogue <- era5() |>
 # Set date range with years only
 catalogue <- era5() |>
   set_date_range(c("2020", "2021"))
-
 # Set date range with year-month
 catalogue <- era5() |>
   set_date_range(c("2020-06", "2020-08"))
@@ -49,4 +50,8 @@ catalogue <- era5() |>
   set_date_range(c(as.Date("2020-01-01"), as.Date("2020-12-31")))
 }
 
+# Retrieve multiple ranges at once.
+catalogue <- era5() |>
+  set_date_range(list(`2020` = c("2020-01-01", "2020-12-31"),
+                      `2021` = c("2021-01-01", "2021-12-31")))
 }

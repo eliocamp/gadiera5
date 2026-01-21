@@ -11,8 +11,10 @@
 #'   * A character vector with ISO format dates: `c("2020-01-01", "2020-12-31")`
 #'   * A character vector with year only: `c("2020", "2021")` (automatically expands to full year)
 #'   * A character vector with year-month: `c("2020-01", "2020-06")` (expands to first/last day of month)
+#' `range` can also be a list of range specifications to retrieve multiple non-overlapping ranges.
 #'
-#' @return A copy of the input catalogue with two additional columns:
+#' @return A copy of the input catalogue with three additional columns:
+#'   * `range_id`: ID of the range.
 #'   * `range_start`: Start date of the requested range (Date class)
 #'   * `range_end`: End date of the requested range (Date class)
 #'
@@ -25,7 +27,6 @@
 #' # Set date range with years only
 #' catalogue <- era5() |>
 #'   set_date_range(c("2020", "2021"))
-#'
 #' # Set date range with year-month
 #' catalogue <- era5() |>
 #'   set_date_range(c("2020-06", "2020-08"))
@@ -35,10 +36,34 @@
 #'   set_date_range(c(as.Date("2020-01-01"), as.Date("2020-12-31")))
 #' }
 #'
+#' # Retrieve multiple ranges at once.
+#' catalogue <- era5() |>
+#'   set_date_range(list(`2020` = c("2020-01-01", "2020-12-31"),
+#'                       `2021` = c("2021-01-01", "2021-12-31")))
 #' @export
 set_date_range <- function(catalogue, range) {
   catalogue <- data.table::copy(catalogue)
 
+  if (!is.list(range)) {
+    range <- list(`1` = range)
+  }
+
+  if (is.list(range)) {
+    catalogue <- data.table::rbindlist(
+      lapply(
+        range,
+        set_date_range_one,
+        catalogue = catalogue
+      ),
+
+      idcol = "range_id"
+    )
+    catalogue[, range_id := as.character(range_id)][]
+
+    return(catalogue)
+  }
+}
+set_date_range_one <- function(catalogue, range) {
   range <- parse_range(range)
   catalogue[,
     c("range_start", "range_end") := list(rep(range[1], .N), rep(range[2], .N))
