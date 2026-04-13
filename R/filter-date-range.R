@@ -48,24 +48,27 @@ set_date_range <- function(catalogue, range) {
     range <- list(`1` = range)
   }
 
-  if (is.list(range)) {
-    catalogue <- data.table::rbindlist(
-      lapply(
-        range,
-        set_date_range_one,
-        catalogue = catalogue
-      ),
+  catalogue <- data.table::rbindlist(
+    lapply(
+      range,
+      set_date_range_one,
+      catalogue = catalogue
+    ),
 
-      idcol = "range_id"
-    )
-    catalogue[, range_id := as.character(range_id)][]
+    idcol = "range_id"
+  )
+  catalogue[, range_id := as.character(range_id)][]
 
-    return(catalogue)
-  }
+  return(catalogue)
 }
 set_date_range_one <- function(catalogue, range) {
   range <- parse_range(range)
-  catalogue[,
+
+  if (range[1] > range[2]) {
+    cli::cli_abort("First date is earlier than second date in range.")
+  }
+
+  data.table::copy(catalogue)[,
     c("range_start", "range_end") := list(rep(range[1], .N), rep(range[2], .N))
   ][]
 }
