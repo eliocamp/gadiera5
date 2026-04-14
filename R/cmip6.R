@@ -106,6 +106,43 @@ cmip6_latest <- function(catalogue) {
   catalogue[, .SD[which.max(version2)], by = c(cols)][, version2 := NULL][]
 }
 
+#' Get the "best" grid
+#' 
+#' This selects the best grid based on preferring regridded
+#' data to the preferred target grid ("gr") and then any 
+#' other regridding ("gr1/gr2") and fall back to native grid
+#' "gn" if there's no other choice. 
+#' 
+#' @param catalogue A catalogue returned by [cmip6()]
+#'  
+#' @export 
+cmip6_best_grid <- function(catalogue) {
+  cols <- setdiff(colnames(catalogue), c("grid", cmip6_db_columns[c(1, 2)]))
+    
+  catalogue[, .SD[which_best_grid(grid)], by = c(cols)][]
+}
+
+which_best_grid <- function(grids) { 
+  if (length(grids) == 1) {
+    return(1)
+  }
+
+  # If there's a gr, select the lowest value. 
+  gr <- grids[grepl("^gr", grids)]
+  if (length(gr) > 0) {
+    nums <- as.integer(sub("^gr([0-9]*)(.*)", "\\1", gr))
+    nums[is.na(nums)] <- 0  
+    return(which.min(nums))
+  }
+
+  # If there are more than one, at least one of them should be regridded
+  # The only case we could be here if it's there's more than one 
+  # native grid, which shouldn't happen. 
+  cli::cli_inform("Picking first grid")
+  return(1)
+
+}
+
 cmip6_catalogues <- c(
   "/g/data/oi10/catalog/v2/esm/cmip6-oi10.csv.gz",
   "/g/data/fs38/catalog/v2/esm/cmip6-fs38.csv.gz"
