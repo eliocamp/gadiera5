@@ -119,7 +119,10 @@ the original catalogues are updated.</p>
     <div class="section level2">
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
     <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="fu">cmip6</span><span class="op">(</span>frequency <span class="op">=</span> <span class="st">"mon"</span>, variable_id <span class="op">=</span> <span class="st">"tas"</span><span class="op">)</span></span></span>
-<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in file.exists(db_path):</span> promise already under evaluation: recursive default argument reference or earlier problems?</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Rebuilding catalog database...</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>cannot create dir '/g/data///runner', reason 'No such file or directory'</span>
+<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error:</span> Could not connect to database:</span>
+<span class="r-err co"><span class="r-pr">#&gt;</span> unable to open database file</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span></span></span>
 </code></pre></div>
