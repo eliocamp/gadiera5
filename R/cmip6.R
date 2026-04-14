@@ -97,7 +97,7 @@ cmip6_catalogues <- c(
   "/g/data/fs38/catalog/v2/esm/cmip6-fs38.csv.gz"
 )
 
-db_path <- function() {
+db_path_f <- function() {
   PROJECT <- Sys.getenv("PROJECT")
   USER <- Sys.getenv("USER")
   file.path("/g/data/", PROJECT, USER, "cmip6.sqlite")
@@ -105,7 +105,7 @@ db_path <- function() {
 
 cmip6_catalogue_con <- function(
   csv_paths = cmip6_catalogues,
-  db_path = db_path()
+  db_path = db_path_f()
 ) {
   needs_rebuild <- !file.exists(db_path) ||
     max(file.mtime(csv_paths)) > file.mtime(db_path)
@@ -119,7 +119,7 @@ cmip6_catalogue_con <- function(
 
 build_cmip_db <- function(
   csv_paths = cmip6_catalogues,
-  db_path = db_path()
+  db_path = db_path_f()
 ) {
   cli::cli_inform("Rebuilding catalog database...")
   if (!dir.exists(dirname(db_path))) {
