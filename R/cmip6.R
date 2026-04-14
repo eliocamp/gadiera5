@@ -117,9 +117,9 @@ cmip6_latest <- function(catalogue) {
 #'  
 #' @export 
 cmip6_best_grid <- function(catalogue) {
-  cols <- setdiff(colnames(catalogue), c("grid", cmip6_db_columns[c(1, 2)]))
+  cols <- setdiff(colnames(catalogue), c("grid_label", cmip6_db_columns[c(1, 2)]))
     
-  catalogue[, .SD[which_best_grid(grid)], by = c(cols)][]
+  catalogue[, .SD[which_best_grid(grid_label)], by = c(cols)][]
 }
 
 which_best_grid <- function(grids) { 
