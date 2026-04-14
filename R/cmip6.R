@@ -67,7 +67,6 @@ cmip6 <- function(
     filters
   )
   
-  clauses <- c(clauses, "version LIKE 'v%'")
   where <- paste(clauses, collapse = " AND ")
   sql <- sprintf("SELECT * FROM catalog WHERE %s", where)
   con <- cmip6_catalogue_con()
