@@ -4,11 +4,11 @@
 
 - [`cmip6()`](https://eliocamp.github.io/gadiera5/reference/cmip6.md) :
   Query CMIP6 catalog
+- [`cmip6_latest()`](https://eliocamp.github.io/gadiera5/reference/cmip6_latest.md)
+  : Get latest version
 - [`era5()`](https://eliocamp.github.io/gadiera5/reference/era5.md) :
   Get ERA5 data catalogue
 - [`get_files()`](https://eliocamp.github.io/gadiera5/reference/get_files.md)
   : Get all the files defined by a catalogue
-- [`latest_version()`](https://eliocamp.github.io/gadiera5/reference/latest_version.md)
-  : Get latest version
 - [`set_date_range()`](https://eliocamp.github.io/gadiera5/reference/set_date_range.md)
   : Set a date range for an ERA5 catalogue
