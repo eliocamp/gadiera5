@@ -39,7 +39,7 @@ cmip6 <- function(
   experiment_id = NULL,
   variable_id = NULL,
   grid_label = NULL,
-  version = NULL
+  version = "v*"
 ) {
   filters <- list(
     realm = realm,
@@ -66,7 +66,8 @@ cmip6 <- function(
     names(filters),
     filters
   )
-
+  
+  clauses <- c(clauses, "version LIKE 'v%'")
   where <- paste(clauses, collapse = " AND ")
   sql <- sprintf("SELECT * FROM catalog WHERE %s", where)
   con <- cmip6_catalogue_con()
