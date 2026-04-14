@@ -4,6 +4,8 @@
 
 - [`cmip6()`](https://eliocamp.github.io/gadiera5/reference/cmip6.md) :
   Query CMIP6 catalog
+- [`cmip6_best_grid()`](https://eliocamp.github.io/gadiera5/reference/cmip6_best_grid.md)
+  : Get the "best" grid
 - [`cmip6_latest()`](https://eliocamp.github.io/gadiera5/reference/cmip6_latest.md)
   : Get latest version
 - [`era5()`](https://eliocamp.github.io/gadiera5/reference/era5.md) :
