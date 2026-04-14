@@ -59,13 +59,15 @@ from <code><a href="era5.html">era5()</a></code>.</p></dd>
 <dd><p>A date range specification. Can be provided in multiple formats:</p><ul><li><p>A Date object or POSIXct/POSIXlt datetime object (length 2 vector for start and end)</p></li>
 <li><p>A character vector with ISO format dates: <code>c("2020-01-01", "2020-12-31")</code></p></li>
 <li><p>A character vector with year only: <code>c("2020", "2021")</code> (automatically expands to full year)</p></li>
-<li><p>A character vector with year-month: <code>c("2020-01", "2020-06")</code> (expands to first/last day of month)</p></li>
+<li><p>A character vector with year-month: <code>c("2020-01", "2020-06")</code> (expands to first/last day of month)
+<code>range</code> can also be a list of range specifications to retrieve multiple non-overlapping ranges.</p></li>
 </ul></dd>
 
 </dl></div>
     <div class="section level2">
     <h2 id="value">Value<a class="anchor" aria-label="anchor" href="#value"></a></h2>
-    <p>A copy of the input catalogue with two additional columns:</p><ul><li><p><code>range_start</code>: Start date of the requested range (Date class)</p></li>
+    <p>A copy of the input catalogue with three additional columns:</p><ul><li><p><code>range_id</code>: ID of the range.</p></li>
+<li><p><code>range_start</code>: Start date of the requested range (Date class)</p></li>
 <li><p><code>range_end</code>: End date of the requested range (Date class)</p></li>
 </ul></div>
 
@@ -79,7 +81,6 @@ from <code><a href="era5.html">era5()</a></code>.</p></dd>
 <span class="r-in"><span><span class="co"># Set date range with years only</span></span></span>
 <span class="r-in"><span><span class="va">catalogue</span> <span class="op">&lt;-</span> <span class="fu"><a href="era5.html">era5</a></span><span class="op">(</span><span class="op">)</span> <span class="op">|&gt;</span></span></span>
 <span class="r-in"><span>  <span class="fu">set_date_range</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"2020"</span>, <span class="st">"2021"</span><span class="op">)</span><span class="op">)</span></span></span>
-<span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Set date range with year-month</span></span></span>
 <span class="r-in"><span><span class="va">catalogue</span> <span class="op">&lt;-</span> <span class="fu"><a href="era5.html">era5</a></span><span class="op">(</span><span class="op">)</span> <span class="op">|&gt;</span></span></span>
 <span class="r-in"><span>  <span class="fu">set_date_range</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"2020-06"</span>, <span class="st">"2020-08"</span><span class="op">)</span><span class="op">)</span></span></span>
@@ -89,6 +90,12 @@ from <code><a href="era5.html">era5()</a></code>.</p></dd>
 <span class="r-in"><span>  <span class="fu">set_date_range</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/as.Date.html" class="external-link">as.Date</a></span><span class="op">(</span><span class="st">"2020-01-01"</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/r/base/as.Date.html" class="external-link">as.Date</a></span><span class="op">(</span><span class="st">"2020-12-31"</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="op">}</span> <span class="co"># }</span></span></span>
 <span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># Retrieve multiple ranges at once.</span></span></span>
+<span class="r-in"><span><span class="va">catalogue</span> <span class="op">&lt;-</span> <span class="fu"><a href="era5.html">era5</a></span><span class="op">(</span><span class="op">)</span> <span class="op">|&gt;</span></span></span>
+<span class="r-in"><span>  <span class="fu">set_date_range</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>`2020` <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"2020-01-01"</span>, <span class="st">"2020-12-31"</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>                      `2021` <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"2021-01-01"</span>, <span class="st">"2021-12-31"</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in era5():</span> Cannot find era5 root folder. The gadiera5 package is designed to work</span>
+<span class="r-err co"><span class="r-pr">#&gt;</span> on gadi.</span>
 </code></pre></div>
     </div>
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>

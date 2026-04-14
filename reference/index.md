@@ -2,6 +2,8 @@
 
 ## All functions
 
+- [`cmip6()`](https://eliocamp.github.io/gadiera5/reference/cmip6.md) :
+  Query CMIP6 catalog
 - [`era5()`](https://eliocamp.github.io/gadiera5/reference/era5.md) :
   Get ERA5 data catalogue
 - [`get_files()`](https://eliocamp.github.io/gadiera5/reference/get_files.md)

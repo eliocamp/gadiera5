@@ -7,14 +7,14 @@
 
 ## Citation
 
-Campitelli E (2025). *gadiera5: Retrieves ERA5 files from gadi
+Campitelli E (2026). *gadiera5: Retrieves ERA5 files from gadi
 replication*. R package version 0.0.0.9000,
 <https://eliocamp.github.io/gadiera5/>.
 
     @Manual{,
       title = {gadiera5: Retrieves ERA5 files from gadi replication},
       author = {Elio Campitelli},
-      year = {2025},
+      year = {2026},
       note = {R package version 0.0.0.9000},
       url = {https://eliocamp.github.io/gadiera5/},
     }

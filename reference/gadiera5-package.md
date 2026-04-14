@@ -2,6 +2,12 @@
 
 What the package does (one paragraph).
 
+## See also
+
+Useful links:
+
+- <https://eliocamp.github.io/gadiera5/>
+
 ## Author
 
 **Maintainer**: Elio Campitelli <eliocampitelli@gmail.com>
