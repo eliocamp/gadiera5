@@ -91,33 +91,43 @@ cmip6_db_columns <- c(
   "time_range"
 )
 
-#' Get latest version 
-#' 
-#' Returns the latest version of each CMIP6 file
+#' Quick filters
 #' 
 #' @param catalogue A catalogue returned by [cmip6()]
 #'  
+#' @details 
+#' `cmip6_latest()` reutrns the latest version of each file. 
+#' `cmip6_best_grid()` returns the "best" grid based on 
+#' preferring data regridded to the preferred target grid ("gr")
+#' and then any other regridding ("gr1/gr2") and fall back to native grid
+#' "gn" if there's no other choice. 
+#' 
+#' These functions ignore the `grid_label` and `version` columns respectively.
+#' If there are multiple versions with different
+#' grids each, `cmip6_latest()` will return the latest version
+#' irrespective of grid and `cmip6_best_grid()` will return the best grid
+#' irrespective of version. 
+#' This means that the this functions are *not* conmutative. 
+#' 
 #' @export 
+#' @rdname quick_filters
 cmip6_latest <- function(catalogue) {
-  cols <- setdiff(colnames(catalogue), c("version", "version2", cmip6_db_columns[c(1, 2)]))
+  # We chose the latest version irrespective of grid, because otherwise
+  # if we have two versions with two different grids, we can't filter them out. 
+  cols <- setdiff(colnames(catalogue), c("version", "version2", "grid_label", cmip6_db_columns[c(1, 2)]))
   
   catalogue <- data.table::copy(catalogue)[, version2 := as.numeric(gsub("v", "", version))]
   
   catalogue[, .SD[which.max(version2)], by = c(cols)][, version2 := NULL][]
 }
 
-#' Get the "best" grid
-#' 
-#' This selects the best grid based on preferring regridded
-#' data to the preferred target grid ("gr") and then any 
-#' other regridding ("gr1/gr2") and fall back to native grid
-#' "gn" if there's no other choice. 
-#' 
-#' @param catalogue A catalogue returned by [cmip6()]
-#'  
+
 #' @export 
+#' @rdname quick_filters
 cmip6_best_grid <- function(catalogue) {
-  cols <- setdiff(colnames(catalogue), c("grid_label", cmip6_db_columns[c(1, 2)]))
+  # We chose the best grid irrespective of version, because otherwise
+  # if we have two versions with two different grids, we can't filter them out. 
+  cols <- setdiff(colnames(catalogue), c("grid_label", "version", cmip6_db_columns[c(1, 2)]))
     
   catalogue[, .SD[which_best_grid(grid_label)], by = c(cols)][]
 }
@@ -132,14 +142,14 @@ which_best_grid <- function(grids) {
   if (length(gr) > 0) {
     nums <- as.integer(sub("^gr([0-9]*)(.*)", "\\1", gr))
     nums[is.na(nums)] <- 0  
-    return(which.min(nums))
+    return(which(nums == min(nums)))
   }
 
   # If there are more than one, at least one of them should be regridded
   # The only case we could be here if it's there's more than one 
   # native grid, which shouldn't happen. 
   cli::cli_inform("Picking first grid")
-  return(1)
+  return(which(grids == grids[[1]]))
 
 }
 
