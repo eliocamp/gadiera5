@@ -98,12 +98,12 @@ cmip6_db_columns <- c(
 #' @param catalogue A catalogue returned by [cmip6()]
 #'  
 #' @export 
-latest_version <- function(catalogue) {
+cmip6_latest <- function(catalogue) {
   cols <- setdiff(colnames(catalogue), c("version", "version2", cmip6_db_columns[c(1, 2)]))
   
   catalogue <- data.table::copy(catalogue)[, version2 := as.numeric(gsub("v", "", version))]
   
-  catalogue[, .SD[which.max(version2)], by = c(cols)][, version2 := NULL]
+  catalogue[, .SD[which.max(version2)], by = c(cols)][, version2 := NULL][]
 }
 
 cmip6_catalogues <- c(
