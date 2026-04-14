@@ -16,7 +16,8 @@ Imports:
     cli,
     data.table,
     glue,
-    unglue
+    unglue,
+    RSQLite
 Depends: 
-    R (>= 3.5)
+    R (>= 4.1.0)
 URL: https://eliocamp.github.io/gadiera5/
