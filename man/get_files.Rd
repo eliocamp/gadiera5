@@ -17,6 +17,7 @@ A data.table with columns:
 \item \code{aggregation}: The temporal aggregation (e.g., "monthly", "hourly")
 \item \code{range_start}: Start date of the requested range
 \item \code{range_end}: End date of the requested range
+\item \code{range_id}: ID of the date rang (it will be added if \code{catalogue} doesn't have one)
 \item \code{files}: A list column containing character vectors of file paths for each
 combination of variable, aggregation, and date range. Files that don't exist
 will be \code{NA}.
@@ -32,8 +33,8 @@ on gadi's filesystem.
 # Get catalogue and filter for specific variable and dates
 catalogue <- era5() |>
   subset(variable == "2t") |>
-  set_date_range("2020-01-01", "2020-12-31") |>
-  get_files(catalogue)
+  set_date_range(c("2020-01-01", "2020-12-31")) |>
+  get_files()
 }
 
 }
