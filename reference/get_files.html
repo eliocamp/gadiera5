@@ -61,6 +61,7 @@ Typically obtained by subsetting the output of <code><a href="era5.html">era5()<
 <li><p><code>aggregation</code>: The temporal aggregation (e.g., "monthly", "hourly")</p></li>
 <li><p><code>range_start</code>: Start date of the requested range</p></li>
 <li><p><code>range_end</code>: End date of the requested range</p></li>
+<li><p><code>range_id</code>: ID of the date rang (it will be added if <code>catalogue</code> doesn't have one)</p></li>
 <li><p><code>files</code>: A list column containing character vectors of file paths for each
 combination of variable, aggregation, and date range. Files that don't exist
 will be <code>NA</code>.</p></li>
@@ -72,8 +73,8 @@ will be <code>NA</code>.</p></li>
 <span class="r-in"><span><span class="co"># Get catalogue and filter for specific variable and dates</span></span></span>
 <span class="r-in"><span><span class="va">catalogue</span> <span class="op">&lt;-</span> <span class="fu"><a href="era5.html">era5</a></span><span class="op">(</span><span class="op">)</span> <span class="op">|&gt;</span></span></span>
 <span class="r-in"><span>  <span class="fu"><a href="https://rdrr.io/r/base/subset.html" class="external-link">subset</a></span><span class="op">(</span><span class="va">variable</span> <span class="op">==</span> <span class="st">"2t"</span><span class="op">)</span> <span class="op">|&gt;</span></span></span>
-<span class="r-in"><span>  <span class="fu"><a href="set_date_range.html">set_date_range</a></span><span class="op">(</span><span class="st">"2020-01-01"</span>, <span class="st">"2020-12-31"</span><span class="op">)</span> <span class="op">|&gt;</span></span></span>
-<span class="r-in"><span>  <span class="fu">get_files</span><span class="op">(</span><span class="va">catalogue</span><span class="op">)</span></span></span>
+<span class="r-in"><span>  <span class="fu"><a href="set_date_range.html">set_date_range</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"2020-01-01"</span>, <span class="st">"2020-12-31"</span><span class="op">)</span><span class="op">)</span> <span class="op">|&gt;</span></span></span>
+<span class="r-in"><span>  <span class="fu">get_files</span><span class="op">(</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="op">}</span> <span class="co"># }</span></span></span>
 <span class="r-in"><span></span></span>
 </code></pre></div>

@@ -34,6 +34,9 @@ A data.table with columns:
 
 - `range_end`: End date of the requested range
 
+- `range_id`: ID of the date rang (it will be added if `catalogue`
+  doesn't have one)
+
 - `files`: A list column containing character vectors of file paths for
   each combination of variable, aggregation, and date range. Files that
   don't exist will be `NA`.
@@ -45,7 +48,7 @@ if (FALSE) { # \dontrun{
 # Get catalogue and filter for specific variable and dates
 catalogue <- era5() |>
   subset(variable == "2t") |>
-  set_date_range("2020-01-01", "2020-12-31") |>
-  get_files(catalogue)
+  set_date_range(c("2020-01-01", "2020-12-31")) |>
+  get_files()
 } # }
 ```
