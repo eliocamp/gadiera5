@@ -7,6 +7,7 @@ The goal of gadiera5 is to list ERA5 files stored in on gadi.
 You can install the development version of gadiera5 like so:
 
 ``` r
+
 pak::pak("eliocamp/gadiera5")
 ```
 
@@ -19,6 +20,7 @@ well as a description. This data.table can then be filtered and
 subsetted as usual.
 
 ``` r
+
 library(gadiera5)
 
 (temp_2metres <- era5() |>
@@ -34,6 +36,7 @@ function sets the dates of dates of interest. The range can be specified
 as full dates but setting year-month or just year is also supported.
 
 ``` r
+
 temp_2metres |>
   set_date_range(c("2020-01-03", "2022-03-15"))
 #>    variable           long_name         level      aggregation range_start
@@ -45,6 +48,7 @@ temp_2metres |>
 ```
 
 ``` r
+
 temp_2metres |>
   set_date_range(c("2020-01", "2022-03"))
 #>    variable           long_name         level      aggregation range_start
@@ -56,6 +60,7 @@ temp_2metres |>
 ```
 
 ``` r
+
 (temp_2metres <- temp_2metres |>
   set_date_range(c(2020, 2022)))
 #>    variable           long_name         level      aggregation range_start
@@ -72,6 +77,7 @@ to retrieve all the files. The return is a data.table with a list column
 called `files`.
 
 ``` r
+
 temp_2metres |>
   get_files()
 #>    variable      aggregation range_start  range_end           files

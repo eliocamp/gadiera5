@@ -82,9 +82,6 @@ once unless the original catalogues are updated.
 
 ``` r
 cmip6(frequency = "mon", variable_id = "tas")
-#> Rebuilding catalog database...
-#> Warning: cannot create dir '/g/data///runner', reason 'No such file or directory'
-#> Error: Could not connect to database:
-#> unable to open database file
+#> Error in cmip6(frequency = "mon", variable_id = "tas"): The package "RSQlite" is required for cmip6
 
 ```
