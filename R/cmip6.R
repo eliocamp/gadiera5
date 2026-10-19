@@ -42,7 +42,7 @@ cmip6 <- function(
   version = NULL
 ) {
 
-  rlang::check_installed("RSQlite", reason = "for cmip6")
+  rlang::check_installed("RSQLite", reason = "for cmip6")
   filters <- list(
     realm = realm,
     frequency = frequency,
