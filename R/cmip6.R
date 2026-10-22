@@ -144,7 +144,8 @@ which_best_grid <- function(grids) {
   if (length(gr) > 0) {
     nums <- as.integer(sub("^gr([0-9]*)(.*)", "\\1", gr))
     nums[is.na(nums)] <- 0  
-    return(which(nums == min(nums)))
+    selected <- gr[which(nums == min(nums))]
+    return(which(grids == selected))
   }
 
   # If there are more than one, at least one of them should be regridded
