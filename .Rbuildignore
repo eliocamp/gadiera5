@@ -7,3 +7,7 @@
 ^docs$
 ^pkgdown$
 ^\.github$
+data-raw
+duck.sh
+.envrc
+.vscode

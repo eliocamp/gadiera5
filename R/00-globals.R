@@ -1,4 +1,8 @@
-era5_root <- "/g/data/rt52/era5/"
+era5_root <- list(
+  era5 = "/g/data/rt52/era5/",
+  `era5.1` = "/g/data/rt52/era5-1/"
+)
+
 aggregations <- list(hourly = "reanalysis", monthly = "monthly-averaged")
 levels <- list(
   single_level = "single-levels",
@@ -12,4 +16,4 @@ levels_short <- list(
 
 template_dir <- "{level}/{aggregation}/{variable}/{year}/{file}"
 
-template_file <- "{variable}_era5_{source}_{level_short}_{date_start}-{date_end}.nc"
+template_file <- "{variable}_era5*_{source}_{level_short}_{date_start}-{date_end}.nc"

@@ -4,11 +4,15 @@
 \alias{get_files}
 \title{Get all the files defined by a catalogue}
 \usage{
-get_files(catalogue)
+get_files(catalogue, version = "best")
 }
 \arguments{
 \item{catalogue}{A data.table containing ERA5 catalogue information.
 Typically obtained by subsetting the output of \code{\link[=era5]{era5()}} and applying \code{\link[=set_date_range]{set_date_range()}}.}
+
+\item{version}{A string with the version to use. The default ("best"), chooses ERA5.1
+over ERA5 when the latter has available files. This \href{https://www.ecmwf.int/en/elibrary/81149-global-stratospheric-temperature-bias-and-other-stratospheric-aspects-era5-and}{mainly affects variables in the stratosphere and upper troposphere between 2000 and 2006}.
+To restrict search to a particular version, use "era5" or "era5.1".}
 }
 \value{
 A data.table with columns:
@@ -32,8 +36,8 @@ on gadi's filesystem.
 \dontrun{
 # Get catalogue and filter for specific variable and dates
 catalogue <- era5() |>
-  subset(variable == "2t") |>
-  set_date_range(c("2020-01-01", "2020-12-31")) |>
+  subset(variable == "v") |>
+  set_date_range(c("1999-01-01", "2000-12-31")) |>
   get_files()
 }
 

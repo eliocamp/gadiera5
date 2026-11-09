@@ -34,7 +34,7 @@
 #'
 #' @export
 era5 <- function() {
-  rt52 <- file.exists(era5_root)
+  rt52 <- file.exists(era5_root$era5)
 
   if (!rt52) {
     if (!on_gadi()) {
@@ -71,6 +71,10 @@ era5 <- function() {
 #'
 #' @param catalogue A data.table containing ERA5 catalogue information.
 #'   Typically obtained by subsetting the output of [era5()] and applying [set_date_range()].
+#' @param version A string with the version to use. The default ("best"), chooses ERA5.1
+#' over ERA5 when the latter has available files. This [mainly affects variables in the stratosphere
+#' and upper troposphere between 2000 and 2006](https://www.ecmwf.int/en/elibrary/81149-global-stratospheric-temperature-bias-and-other-stratospheric-aspects-era5-and).
+#' To restrict search to a particular version, use "era5" or "era5.1".
 #'
 #' @return A data.table with columns:
 #'   * `variable`: The ERA5 variable name
@@ -86,13 +90,13 @@ era5 <- function() {
 #' \dontrun{
 #' # Get catalogue and filter for specific variable and dates
 #' catalogue <- era5() |>
-#'   subset(variable == "2t") |>
-#'   set_date_range(c("2020-01-01", "2020-12-31")) |>
+#'   subset(variable == "v") |>
+#'   set_date_range(c("1999-01-01", "2000-12-31")) |>
 #'   get_files()
 #' }
 #'
 #' @export
-get_files <- function(catalogue) {
+get_files <- function(catalogue, version = "best") {
   catalogue <- data.table::copy(catalogue)
 
   if (!("range_id" %in% colnames(catalogue))) {
@@ -122,12 +126,21 @@ get_files <- function(catalogue) {
   )]
 
   catalogue$file <- glue::glue_data(catalogue, template_file)
-  catalogue$glob <- glue::glue_data(
+
+  file_glob <- glue::glue_data(
     catalogue,
-    file.path(era5_root, template_dir)
+    template_dir
   )
 
-  catalogue[, file := glob_file(glob)]
+  if (version == "best") {
+    era51 <- glob_file(file.path(era5_root[["era5.1"]], file_glob))
+    era5 <- glob_file(file.path(era5_root[["era5"]], file_glob))
+    file <- ifelse(!is.na(era51), era51, era5)
+  } else {
+    file <- glob_file(file.path(era5_root[[version]], file_glob))
+  }
+
+  catalogue[, file := file]
 
   catalogue[,
     .(files = as_list_of_files(file)),
