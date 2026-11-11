@@ -135,12 +135,12 @@ get_files <- function(catalogue, version = "best") {
   if (version == "best") {
     era51 <- glob_file(file.path(era5_root[["era5.1"]], file_glob))
     era5 <- glob_file(file.path(era5_root[["era5"]], file_glob))
-    file <- ifelse(!is.na(era51), era51, era5)
+    real_file <- ifelse(!is.na(era51), era51, era5)
   } else {
-    file <- glob_file(file.path(era5_root[[version]], file_glob))
+    real_file <- glob_file(file.path(era5_root[[version]], file_glob))
   }
 
-  catalogue[, file := file]
+  catalogue[, file := real_file]
 
   catalogue[,
     .(files = as_list_of_files(file)),
@@ -162,7 +162,8 @@ glob_file <- function(globs) {
       file
     },
     character(1)
-  )
+  ) |>
+    unname()
 }
 
 get_variable_range <- function(var, agg) {
